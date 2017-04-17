@@ -43,9 +43,9 @@ export default class Editor extends React.Component {
         const code = this.editor.getValue()
         if (!this.changed(code)) return
 
-        this.version++
+        const version = ++this.version
         console.log(`-- editor: send peer change, version ${this.version}`)
-        this.save(code)
+        this.save({code, version})
         this.props.peer.change({code, version: this.version})
       }, 100)
     })
