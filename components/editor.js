@@ -4,8 +4,9 @@ import Head from 'next/head'
 export default class Editor extends React.Component {
   constructor (props) {
     super()
-    this.storeKey = 'code'
     this.props = props
+    this.cursor
+    this.version = 0
   }
 
   onChange () {
@@ -28,19 +29,35 @@ export default class Editor extends React.Component {
 
   setEvents () {
     this.editor.getSession().on('change', (e) => {
+      console.log(`-- editor: code changed, version ${this.version}`)
+
+      setTimeout(() => {
+        // Restore cursor.
+        if (this.cursor) {
+          this.editor.navigateTo(this.cursor.row, this.cursor.column)
+          this.cursor = null
+        }
+      }, 16)
+
       setTimeout(() => {
         const code = this.editor.getValue()
         if (!this.changed(code)) return
 
-        console.log('-- editor: send peer change')
+        this.version++
+        console.log(`-- editor: send peer change, version ${this.version}`)
         this.save(code)
-        this.props.peer.change(code)
+        this.props.peer.change({code, version: this.version})
       }, 100)
     })
 
-    this.props.peer.on('documentChanged', (code) => {
-      console.log('-- editor: documentChanged')
-      this.save(code)
+    this.props.peer.on('documentChanged', ({code, version}) => {
+      console.log(`-- editor: documentChanged, version: ${version}`)
+      this.save({code, version})
+      this.cursor = this.editor.selection.getCursor()
+      if (version < this.version) return
+      this.version = version
+
+      // Update editor with new code.
       this.editor.setValue(code)
     })
   }
@@ -51,17 +68,24 @@ export default class Editor extends React.Component {
   }
 
   getSavedCode () {
-    return window.localStorage.getItem(this.storeKey)
+    return window.localStorage.getItem('code')
   }
 
-  save (code) {
-    window.localStorage.setItem(this.storeKey, code)
+  getSavedVersion () {
+    return window.localStorage.getItem('version')
+  }
+
+  save ({code, version}) {
+    window.localStorage.setItem('code', code)
+    window.localStorage.setItem('version', version)
   }
 
   load () {
     const code = this.getSavedCode()
-    if (!code) return
+    const version = this.getSavedVersion()
+    this.version = version || 0
 
+    if (!code) return
     this.editor.setValue(code)
   }
 
