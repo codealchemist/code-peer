@@ -60,6 +60,14 @@ export default class Editor extends React.Component {
       // Update editor with new code.
       this.editor.setValue(code)
     })
+
+    this.props.peer.on('newPeer', () => {
+      console.log(`-- editor: NEW PEER`)
+
+      // Force a peer update to let new peer get current code.
+      const code = this.editor.getValue()
+      this.props.peer.change({code, version: this.version})
+    })
   }
 
   changed (code) {

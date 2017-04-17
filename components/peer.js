@@ -22,6 +22,7 @@ export default class Peer {
     this.socket.on('created', (data) => this.onCreated(data))
     this.socket.on('joined', (data) => this.onJoined(data))
     this.socket.on('documentChanged', (data) => this.onDocumentChanged(data))
+    this.socket.on('newPeer', (data) => this.onNewPeer(data))
   }
 
   onConnection (data) {
@@ -53,6 +54,11 @@ export default class Peer {
   onJoined (id) {
     console.log('-- socket: joined document:', id)
     this.fire('joined', id)
+  }
+
+  onNewPeer (data) {
+    console.log('-- socket: new peer:', data)
+    this.fire('newPeer', data)
   }
 
   onDocumentChanged ({id, data}) {
