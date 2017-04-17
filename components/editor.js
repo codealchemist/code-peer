@@ -72,7 +72,7 @@ export default class Editor extends React.Component {
 
   changed (code) {
     const savedCode = this.getSavedCode()
-    return (savedCode != code)
+    return (savedCode != code) // eslint-disable-line
   }
 
   getSavedCode () {
