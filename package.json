@@ -2,7 +2,7 @@
   "name": "code-peer",
   "version": "1.0.0",
   "description": "P2P code editor.",
-  "main": "src/index.js",
+  "main": "pages/index.js",
   "scripts": {
     "test": "standard",
     "lint-focus": "standard-focus",
