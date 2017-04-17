@@ -7,6 +7,10 @@ export default class Index extends React.Component {
   constructor (props) {
     super(props)
     this.title = 'Code Peer'
+
+    const documentId = this.props.params.documentId
+    this.peer = new Peer({documentId, props: this.props})
+    this.peer.init()
   }
 
   static getInitialProps ({ req, res, jsonPageRes }) {
@@ -16,9 +20,6 @@ export default class Index extends React.Component {
 
   componentDidMount () {
     const server = window.localStorage.getItem('server') || 'http://localhost:7331'
-    const documentId = this.props.params.documentId
-    this.peer = new Peer({server, documentId, props: this.props})
-    this.peer.init()
     this.handlePeerEvents()
   }
 
@@ -47,7 +48,7 @@ export default class Index extends React.Component {
           <meta name='viewport' content='initial-scale=1.0, width=device-width' />
         </Head>
 
-        <Editor />
+        <Editor peer={this.peer} />
       </div>
     )
   }

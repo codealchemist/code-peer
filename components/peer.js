@@ -21,6 +21,7 @@ export default class Peer {
     this.socket.on('disconnect', (data) => this.onDisconnect(data))
     this.socket.on('created', (data) => this.onCreated(data))
     this.socket.on('joined', (data) => this.onJoined(data))
+    this.socket.on('documentChanged', (data) => this.onDocumentChanged(data))
   }
 
   onConnection (data) {
@@ -54,6 +55,11 @@ export default class Peer {
     this.fire('joined', id)
   }
 
+  onDocumentChanged ({id, data}) {
+    console.log(`-- socket: document ${id} changed:`, data)
+    this.fire('documentChanged', data)
+  }
+
   onPeer () {
     this.peer = new SimplePeer()
   }
@@ -79,5 +85,10 @@ export default class Peer {
     handlers.map((handler) => {
       handler(data)
     })
+  }
+
+  change (data) {
+    this.socket.emit('documentChange', {id: this.documentId, data})
+    this.fire('onDocumentChange', data)
   }
 }
