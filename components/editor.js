@@ -58,7 +58,7 @@ export default class Editor extends React.Component {
       this.version = version
 
       // Update editor with new code.
-      this.editor.setValue(code)
+      this.editor.setValue(code, -1)
     })
 
     this.props.peer.on('newPeer', () => {
@@ -94,7 +94,7 @@ export default class Editor extends React.Component {
     this.version = version || 0
 
     if (!code) return
-    this.editor.setValue(code)
+    this.editor.setValue(code, -1)
   }
 
   render () {
