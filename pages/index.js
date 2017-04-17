@@ -9,17 +9,18 @@ export default class Index extends React.Component {
     this.title = 'Code Peer'
 
     const documentId = this.props.params.documentId
-    this.peer = new Peer({documentId, props: this.props})
+    const server = this.props.url.query.serverUrl
+    this.peer = new Peer({server, documentId, props: this.props})
     this.peer.init()
   }
 
   static getInitialProps ({ req, res, jsonPageRes }) {
     const statusCode = res ? res.statusCode : (jsonPageRes ? jsonPageRes.status : null)
-    return { statusCode, params: req.params }
+    const serverUrl = res ? res.serverUrl : (jsonPageRes ? jsonPageRes.serverUrl : null)
+    return { statusCode, params: req.params, serverUrl }
   }
 
   componentDidMount () {
-    const server = window.localStorage.getItem('server') || 'http://localhost:7331'
     this.handlePeerEvents()
   }
 

@@ -8,7 +8,7 @@
     "lint-focus": "standard-focus",
     "dev": "node server.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js"
+    "start": "NODE_ENV=production server=https://code-peer-server.herokuapp.com node server.js"
   },
   "keywords": [
     "p2p",
@@ -20,6 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.15.2",
+    "nconf": "^0.8.4",
     "next": "^2.1.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
