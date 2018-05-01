@@ -21,9 +21,9 @@
   "dependencies": {
     "express": "^4.15.2",
     "nconf": "^0.8.4",
-    "next": "^2.1.1",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4",
+    "next": "^4.2.3",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
     "simple-peer": "^8.1.0",
     "socket.io-client": "^1.7.3"
   },
